@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://be3pvv8hg3jox"]
+
+[ext_resource type="PackedScene" uid="uid://b3vi2epc6fme5" path="res://art/player.glb" id="1_o07jq"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wassl"]
+height = 0.8
+radius = 1.04014
+
+[node name="Player" type="CharacterBody3D"]
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.466073, 0)
+metadata/_edit_group_ = true
+
+[node name="Character" parent="Pivot" instance=ExtResource("1_o07jq")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("CylinderShape3D_wassl")

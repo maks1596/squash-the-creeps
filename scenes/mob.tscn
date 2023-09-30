@@ -15,3 +15,7 @@ shape = SubResource("BoxShape3D_elo50")
 metadata/_edit_group_ = true
 
 [node name="Character" parent="Pivot" instance=ExtResource("1_lefhb")]
+
+[node name="VisibleOnScreenNotifier" type="VisibleOnScreenNotifier3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.343898, 0.293202)
+aabb = AABB(-1.17839, -0.614208, -1.65081, 2.35679, 1.22842, 3.30163)

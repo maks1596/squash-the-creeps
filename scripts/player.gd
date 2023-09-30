@@ -6,6 +6,8 @@ var _target_velocity = Vector3.ZERO
 var speed = 14
 @export_range(0, 100, 1, "or_greater", "suffix:m/s^2") 
 var fail_acceleration = 75
+@export_range(0, 100, 1, "or_greater", "suffix:m/s") 
+var jump_impulse = 20
 
 @onready var _pivot = $Pivot
 
@@ -15,6 +17,7 @@ func _physics_process(delta):
 	_rotate_model(direction)
 	_apply_ground_velocity(direction)
 	_apply_vertical_velocity(delta)
+	_apply_jump_implulse()
 	
 	velocity = _target_velocity
 	move_and_slide()
@@ -44,4 +47,12 @@ func _apply_ground_velocity(direction: Vector3):
 
 func _apply_vertical_velocity(delta: float):
 	if is_on_floor(): return
+	
 	_target_velocity.y = _target_velocity.y - (fail_acceleration * delta)
+
+
+func _apply_jump_implulse():
+	if not is_on_floor(): return
+	if not Input.is_action_just_pressed("jump"): return
+	
+	_target_velocity.y = jump_impulse

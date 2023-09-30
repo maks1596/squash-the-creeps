@@ -7,6 +7,7 @@
 size = Vector3(2.04325, 1.22446, 2.18203)
 
 [node name="Mob" type="CharacterBody3D"]
+collision_mask = 0
 script = ExtResource("1_txmqc")
 
 [node name="CollisionShape" type="CollisionShape3D" parent="."]

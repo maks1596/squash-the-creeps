@@ -14,7 +14,7 @@ func _physics_process(delta):
 	
 	_rotate_model(direction)
 	_apply_ground_velocity(direction)
-	_apply_vertical_Velocity(delta)
+	_apply_vertical_velocity(delta)
 	
 	velocity = _target_velocity
 	move_and_slide()
@@ -42,6 +42,6 @@ func _apply_ground_velocity(direction: Vector3):
 	_target_velocity.z = direction.z * speed
 
 
-func _apply_vertical_Velocity(delta: float):
+func _apply_vertical_velocity(delta: float):
 	if is_on_floor(): return
 	_target_velocity.y = _target_velocity.y - (fail_acceleration * delta)

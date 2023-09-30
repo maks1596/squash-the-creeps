@@ -1,12 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://dp0v8ystjgwle"]
+[gd_scene load_steps=8 format=3 uid="uid://dp0v8ystjgwle"]
 
 [ext_resource type="PackedScene" uid="uid://be3pvv8hg3jox" path="res://scenes/player.tscn" id="1_gf0tb"]
+[ext_resource type="PackedScene" uid="uid://cg2q4ijrpq8sw" path="res://scenes/spawner.tscn" id="2_3ewpc"]
+[ext_resource type="PackedScene" uid="uid://diqdvmpil83uq" path="res://scenes/mob.tscn" id="3_fhteq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_621iu"]
 size = Vector3(60, 2, 60)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wk0kp"]
 size = Vector3(60, 2, 60)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h0grf"]
+albedo_color = Color(0.788235, 0.647059, 0.294118, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_y3v1r"]
+material = SubResource("StandardMaterial3D_h0grf")
 
 [node name="Main" type="Node"]
 
@@ -27,8 +35,33 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.502469, 0)
 
 [node name="CameraPivot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 13.542, 19)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 18, 18)
+metadata/_edit_group_ = true
 
 [node name="Camera" type="Camera3D" parent="CameraPivot"]
 projection = 1
 size = 19.0
+
+[node name="Cylinders" type="Node3D" parent="."]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cylinders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 15)
+mesh = SubResource("CylinderMesh_y3v1r")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Cylinders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, 15)
+mesh = SubResource("CylinderMesh_y3v1r")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Cylinders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, -15)
+mesh = SubResource("CylinderMesh_y3v1r")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Cylinders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -15)
+mesh = SubResource("CylinderMesh_y3v1r")
+
+[node name="Spawner" parent="." node_paths=PackedStringArray("spawn_parent", "player") instance=ExtResource("2_3ewpc")]
+spawn_parent = NodePath("..")
+player = NodePath("../Player")
+mobs = Array[PackedScene]([ExtResource("3_fhteq")])

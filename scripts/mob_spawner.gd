@@ -6,11 +6,13 @@ const MOB_DIRECTION_DIVIATION = PI / 4
 var _player_position: Vector3:
 	get: return player.position
 
-@export var spawn_parent: Node3D
+@export var spawn_parent: Node
 @export var player: Node3D
 @export var mobs: Array[PackedScene] = []
 @export_range(0, 1, 1, "or_greater", "suffix:m/s") var mob_min_speed = 10
 @export_range(1, 1, 1, "or_greater", "suffix:m/s") var mob_max_speed = 18
+
+@onready var spawn_location = $SpawnPath/SpawnLocation as PathFollow3D
 
 func start():
 	pass
@@ -23,15 +25,30 @@ func stop():
 func _spawn_mob():
 	var mobScene = mobs.pick_random() as PackedScene
 	var mob = mobScene.instantiate() as Mob
-	_generate_direction(mob, _player_position)
-	_generate_speed(mob)
+	
+	var spawnPosition = _generate_spawn_position()
+	var directionDiviation = _generate_direction_diviation()
+	
+	mob.look_at_from_position(spawnPosition, _player_position)
+	mob.rotate_y(directionDiviation)
+	mob.velocity = _generate_velocity(mob.rotation)
+	
 	spawn_parent.add_child(mob)
 
 
-func _generate_speed(mob: Mob):
+func _generate_spawn_position() -> Vector3:
+	spawn_location.progress_ratio = randf()
+	return spawn_location.position
+
+
+func _generate_direction_diviation() -> float:
+	return randf_range(-MOB_DIRECTION_DIVIATION, MOB_DIRECTION_DIVIATION)
+
+
+func _generate_velocity(current_rotation: Vector3) -> Vector3:
 	var speed = randi_range(mob_min_speed, mob_max_speed)
 	var speedVector = Vector3.FORWARD * speed
-	mob.velocity = speedVector.rotated(Vector3.UP, mob.rotation.y)
+	return speedVector.rotated(Vector3.UP, current_rotation.y)
 
 
 func _generate_direction(mob: Mob, target_position: Vector3):
@@ -44,19 +61,17 @@ func _get_configuration_warnings():
 	var warnings = []
 	
 	if not spawn_parent:
-		warnings += "`Spawn parent` should be initialized"
+		warnings.append("`Spawn parent` should be initialized")
 	
 	if not player:
 		warnings += "`player` should be initialized"
 		
 	if mob_max_speed < mob_min_speed:
-		warnings += "`Mob max speed` should be greater or equal `Mom min speed`"
+		warnings.append("`Mob max speed` should be greater or equal `Mom min speed`")
 	
 	if not mobs:
-		warnings += "`Mobs` array should be initialized"
+		warnings.append("`Mobs` array should be initialized")
 	elif mobs.is_empty():
-		warnings += "`Mobs` array should not be empty"
-	elif mobs.any(func (scene): return !(scene is Mob)):
-		warnings += "All `Mobs` should be derived from `Mob` class"
+		warnings.append("`Mobs` array should not be empty")
 	
 	return warnings

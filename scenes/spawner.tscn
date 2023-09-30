@@ -13,6 +13,7 @@ point_count = 5
 script = ExtResource("1_llwn8")
 
 [node name="SpawnPath" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 curve = SubResource("Curve3D_q18ax")
 
 [node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath"]

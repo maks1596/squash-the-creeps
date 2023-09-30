@@ -23,14 +23,15 @@ func stop():
 
 
 func _spawn_mob():
-	var mobScene = mobs.pick_random() as PackedScene
-	var mob = mobScene.instantiate() as Mob
+	var mob_scene = mobs.pick_random() as PackedScene
+	var mob = mob_scene.instantiate() as Mob
 	
-	var spawnPosition = _generate_spawn_position()
-	var directionDiviation = _generate_direction_diviation()
+	var spawn_position = _generate_spawn_position()
+	var direction_diviation = _generate_direction_diviation()
 	
-	mob.look_at_from_position(spawnPosition, _player_position)
-	mob.rotate_y(directionDiviation)
+	mob.look_at_from_position(spawn_position, _player_position)
+	mob.rotation.x = 0
+	mob.rotate_y(direction_diviation)
 	mob.velocity = _generate_velocity(mob.rotation)
 	
 	spawn_parent.add_child(mob)

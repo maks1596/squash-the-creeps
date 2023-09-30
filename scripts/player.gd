@@ -8,6 +8,8 @@ var speed = 14
 var fail_acceleration = 75
 @export_range(0, 100, 1, "or_greater", "suffix:m/s") 
 var jump_impulse = 20
+@export_range(0, 100, 1, "or_greater", "suffix:m/s") 
+var bounce_impulse = 16
 
 @onready var _pivot = $Pivot
 
@@ -18,6 +20,7 @@ func _physics_process(delta):
 	_apply_ground_velocity(direction)
 	_apply_vertical_velocity(delta)
 	_apply_jump_implulse()
+	_check_squash_mob()
 	
 	velocity = _target_velocity
 	move_and_slide()
@@ -56,3 +59,21 @@ func _apply_jump_implulse():
 	if not Input.is_action_just_pressed("jump"): return
 	
 	_target_velocity.y = jump_impulse
+
+
+func _check_squash_mob():
+	for i in range(get_slide_collision_count()):
+		var collisison = get_slide_collision(i)
+		var collider = collisison.get_collider()
+		
+		if not collider: continue
+		if not collider.is_in_group(Mob.GROUP): continue
+		if not _is_collide_from_top(collisison): continue
+		
+		var mob = collider as Mob
+		mob.squash()
+		_target_velocity.y = bounce_impulse
+
+
+func _is_collide_from_top(collision: KinematicCollision3D) -> bool:
+	return Vector3.UP.dot(collision.get_normal()) > 0.1

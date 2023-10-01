@@ -15,6 +15,8 @@ func _physics_process(_delta):
 
 
 func squash():
+	if is_queued_for_deletion(): return
+	
 	squashed.emit()
 	queue_free()
 

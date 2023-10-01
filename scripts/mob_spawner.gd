@@ -13,6 +13,7 @@ var _player_position: Vector3:
 @export_range(1, 1, 1, "or_greater", "suffix:m/s") var mob_max_speed = 18
 
 @onready var spawn_location = $SpawnPath/SpawnLocation as PathFollow3D
+@onready var _spawn_timer = $Timer as Timer
 
 func start():
 	pass
@@ -20,6 +21,7 @@ func start():
 
 func stop():
 	pass
+	_spawn_timer.stop()
 
 
 func _spawn_mob():

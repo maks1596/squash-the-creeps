@@ -2,6 +2,8 @@ extends CharacterBody3D
 
 var _target_velocity = Vector3.ZERO
 
+signal hitted
+
 @export_range(0, 100, 1, "or_greater", "suffix:m/s") 
 var speed = 14
 @export_range(0, 100, 1, "or_greater", "suffix:m/s^2") 
@@ -68,11 +70,22 @@ func _check_squash_mob():
 		
 		if not collider: continue
 		if not collider.is_in_group(Mob.GROUP): continue
-		if not _is_collide_from_top(collisison): continue
 		
-		var mob = collider as Mob
-		mob.squash()
-		_target_velocity.y = bounce_impulse
+		if _is_collide_from_top(collisison): 
+			_on_mob_squashed(collider as Mob)
+		else:
+			_on_player_hitted()
+
+
+
+func _on_mob_squashed(mob: Mob):
+	mob.squash()
+	_target_velocity.y = bounce_impulse
+
+
+func _on_player_hitted():
+	hitted.emit()
+	queue_free()
 
 
 func _is_collide_from_top(collision: KinematicCollision3D) -> bool:

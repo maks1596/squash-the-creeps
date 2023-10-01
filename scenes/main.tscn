@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dp0v8ystjgwle"]
+[gd_scene load_steps=9 format=3 uid="uid://dp0v8ystjgwle"]
 
 [ext_resource type="PackedScene" uid="uid://be3pvv8hg3jox" path="res://scenes/player.tscn" id="1_gf0tb"]
 [ext_resource type="PackedScene" uid="uid://cg2q4ijrpq8sw" path="res://scenes/spawner.tscn" id="2_3ewpc"]
 [ext_resource type="PackedScene" uid="uid://diqdvmpil83uq" path="res://scenes/mob.tscn" id="3_fhteq"]
+[ext_resource type="PackedScene" uid="uid://ckj4qnhnc5otf" path="res://scenes/GUI.tscn" id="4_s2lew"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_621iu"]
 size = Vector3(60, 2, 60)
@@ -69,5 +70,7 @@ spawn_parent = NodePath("..")
 player = NodePath("../Player")
 mobs = Array[PackedScene]([ExtResource("3_fhteq")])
 mob_direction_diviation = 0.523599
+
+[node name="GUI" parent="." instance=ExtResource("4_s2lew")]
 
 [connection signal="hitted" from="Player" to="Spawner" method="stop"]

@@ -31,6 +31,7 @@ func _spawn_mob():
 	mob.rotation.x = 0
 	mob.rotate_y(direction_diviation)
 	mob.velocity = _generate_velocity(mob.rotation)
+	mob.squashed.connect(Score.increase)
 	
 	spawn_parent.add_child(mob)
 

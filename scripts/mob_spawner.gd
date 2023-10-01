@@ -26,11 +26,14 @@ func _spawn_mob():
 	
 	var spawn_position = _generate_spawn_position()
 	var direction_diviation = _generate_direction_diviation()
+	var movement_speed = _generate_movement_speed()
+	var animation_speed = _get_animation_speed(movement_speed)
 	
 	mob.look_at_from_position(spawn_position, target_position)
 	mob.rotation.x = 0
 	mob.rotate_y(direction_diviation)
-	mob.velocity = _generate_velocity(mob.rotation)
+	mob.velocity = _create_velocity(mob.rotation, movement_speed)
+	mob.set_animation_speed(animation_speed)
 	mob.squashed.connect(Score.increase)
 	
 	spawn_parent.add_child(mob)
@@ -45,8 +48,15 @@ func _generate_direction_diviation() -> float:
 	return randf_range(-mob_direction_diviation, mob_direction_diviation)
 
 
-func _generate_velocity(current_rotation: Vector3) -> Vector3:
-	var speed = randi_range(mob_min_speed, mob_max_speed)
+func _generate_movement_speed() -> int:
+	return randi_range(mob_min_speed, mob_max_speed)
+
+
+func _get_animation_speed(movement_speed: int) -> float:
+	return float(movement_speed) / mob_min_speed
+
+
+func _create_velocity(current_rotation: Vector3, speed: int) -> Vector3:
 	var speedVector = Vector3.FORWARD * speed
 	return speedVector.rotated(Vector3.UP, current_rotation.y)
 

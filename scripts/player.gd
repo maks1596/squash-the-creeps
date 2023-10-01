@@ -1,5 +1,8 @@
 extends CharacterBody3D
 
+const _IDLE_ANIMATION_SPEED_SCALE = 1
+const _MOVEMENT_ANIMATION_SPEED_SCALE = 4
+
 var _target_velocity = Vector3.ZERO
 
 signal hitted
@@ -14,6 +17,7 @@ var jump_impulse = 20
 var bounce_impulse = 16
 
 @onready var _pivot = $Pivot
+@onready var _animation_player = $AnimationPlayer as AnimationPlayer
 
 func _physics_process(delta):
 	var direction = _get_direction_from_input()
@@ -23,6 +27,7 @@ func _physics_process(delta):
 	_apply_vertical_velocity(delta)
 	_apply_jump_implulse()
 	_check_squash_mob()
+	_update_animation_speed(direction)
 	
 	velocity = _target_velocity
 	move_and_slide()
@@ -76,6 +81,11 @@ func _check_squash_mob():
 		else:
 			_on_player_hitted()
 
+
+func _update_animation_speed(direction: Vector3):
+	_animation_player.speed_scale = _IDLE_ANIMATION_SPEED_SCALE \
+			if direction == Vector3.ZERO \
+			else _MOVEMENT_ANIMATION_SPEED_SCALE
 
 
 func _on_mob_squashed(mob: Mob):

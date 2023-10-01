@@ -68,5 +68,6 @@ mesh = SubResource("CylinderMesh_y3v1r")
 spawn_parent = NodePath("..")
 player = NodePath("../Player")
 mobs = Array[PackedScene]([ExtResource("3_fhteq")])
+mob_direction_diviation = 0.523599
 
 [connection signal="hitted" from="Player" to="Spawner" method="stop"]

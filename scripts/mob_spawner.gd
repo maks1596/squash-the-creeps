@@ -64,7 +64,7 @@ func _get_configuration_warnings():
 		warnings.append("`Spawn parent` should be initialized")
 	
 	if not player:
-		warnings += "`player` should be initialized"
+		warnings.append("`player` should be initialized")
 		
 	if mob_max_speed < mob_min_speed:
 		warnings.append("`Mob max speed` should be greater or equal `Mom min speed`")
